@@ -5,7 +5,7 @@ import './AddProducts.css';
 
 const AddProductForm = () => {
   const [product, setProduct] = useState({
-    //productId: '',
+    // productId: '',
     name: '',
     description: '',
     minQuantity:'',
@@ -21,12 +21,14 @@ const AddProductForm = () => {
     setProduct({ ...product, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {  
     e.preventDefault();
     if (!product.name || !product.description || !product.minQuantity || !product.quantity || !product.price) {
       setShowError(true);
       return;
     }
+
+    // productId
 
     if (product.quantity < 0 || product.price < 0 || product.minQuantity < 0) {
       alert('Quantity and price should not be less than 0');
@@ -39,7 +41,7 @@ const AddProductForm = () => {
       setShowSuccess(true);
       setShowError(false);
       setProduct({
-        //productId: '',
+        // productId: '',
         name: '',
         description: '',
         minQuantity:'',
@@ -55,7 +57,7 @@ const AddProductForm = () => {
 
   const handleClear = () => {
     setProduct({
-      //productId: '',
+      // productId: '',
       name: '',
       description: '',
       minQuantity:'',
@@ -71,12 +73,12 @@ const AddProductForm = () => {
       <div className="form-wrapper">
         <h2 className="form-title">ADD NEW PRODUCT</h2>
         {showSuccess && (
-          <Alert variant="success" onClose={() => setShowSuccess(false)} dismissible>
+          <Alert variant="success" onClose={() => setShowSuccess(false)}>
             Product added successfully!
           </Alert>
         )}
         {showError && (
-          <Alert variant="danger" onClose={() => setShowError(false)} dismissible>
+          <Alert variant="danger" onClose={() => setShowError(false)}>
             Error adding product. Please try again.
           </Alert>
         )}
