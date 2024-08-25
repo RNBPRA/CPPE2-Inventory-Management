@@ -1,55 +1,70 @@
+// Import necessary libraries
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaRupeeSign, FaBoxOpen, FaExclamationTriangle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// Define the HomePage component
 const HomePage = () => {
+  // Use the useNavigate hook to navigate between routes
   const navigate = useNavigate();
+
+  // State variable to store dashboard data
   const [data, setData] = useState({
     totalItems: 0,
     totalRevenue: 0,
     lowStockItems: 0,
   });
 
+  // Fetch dashboard data from the server on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Send a GET request to the server to fetch inventory data
         const response = await axios.get('http://localhost:8080/api/inventory');
         const inventoryData = response.data;
 
-        // Calculate total items and total revenue
+        // Initialize counters for total items, total revenue, and low stock items
         let totalItems = 0;
         let totalRevenue = 0;
         let lowStockItems = 0;
 
+        // Iterate through the inventory data and calculate the counters
         inventoryData.forEach(item => {
           totalItems += item.quantity;
-          totalRevenue += item.quantity + item.price;
+          totalRevenue += item.quantity * item.price; // Assuming price is per unit
           if (item.quantity < item.minQuantity) {
             lowStockItems++;
           }
         });
 
+        // Update the state with the calculated data
         setData({
           totalItems,
           totalRevenue,
           lowStockItems,
         });
       } catch (error) {
+        // Log any errors to the console
         console.error('Error fetching dashboard data', error);
       }
     };
 
+    // Call the fetchData function
     fetchData();
   }, []);
 
+  // Handle the "Get Started" button click
   const handleGetStarted = () => {
+    // Navigate to the products page
     navigate('/products');
   };
 
+  // Render the home page component
   return (
     <Container fluid className="p-0">
+      {/* Header section */}
       <div className="bg-primary text-white py-5">
         <Container>
           <Row className="mb-5 text-center">
@@ -67,6 +82,7 @@ const HomePage = () => {
         </Container>
       </div>
 
+      {/* Dashboard section */}
       <Container className="py-5">
         <Row className="mb-5 g-4">
           <Col md={4}>
@@ -102,4 +118,5 @@ const HomePage = () => {
   );
 };
 
+// Export the HomePage component
 export default HomePage;

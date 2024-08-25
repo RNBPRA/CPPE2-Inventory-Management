@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import './AddProducts.css';
 
+// Define the component for adding a new product
 const AddProductForm = () => {
   const [product, setProduct] = useState({
     // productId: '',
@@ -12,34 +13,38 @@ const AddProductForm = () => {
     quantity: '',
     price: '',
   });
-
+// State variables for success and error alerts
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
-
+// Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
   };
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {  
     e.preventDefault();
+     // Validate form inputs
     if (!product.name || !product.description || !product.minQuantity || !product.quantity || !product.price) {
       setShowError(true);
       return;
     }
 
     // productId
-
+        // Validate quantity, price, and minQuantity
     if (product.quantity < 0 || product.price < 0 || product.minQuantity < 0) {
       alert('Quantity and price should not be less than 0');
       return;
     }
-
+  // Send a POST request to the API to add the product
     try {
       const response = await axios.post('http://localhost:8080/api/inventory/add', product);
       console.log('Product added successfully:', response.data);
       setShowSuccess(true);
       setShowError(false);
+
+      // Clear form inputs after adding Product
       setProduct({
         // productId: '',
         name: '',
@@ -54,8 +59,9 @@ const AddProductForm = () => {
       setShowSuccess(false);
     }
   };
-
+ // Function to handle form clearing
   const handleClear = () => {
+      // Clear form inputs
     setProduct({
       // productId: '',
       name: '',
