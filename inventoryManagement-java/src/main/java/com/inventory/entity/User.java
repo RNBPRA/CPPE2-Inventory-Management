@@ -7,17 +7,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+//It is annotated with @Entity to indicate that it is a JPA entity.
+//The table name for this entity is "inventory" and is specified using @Table annotation.
+
 @Entity
 @Table(name = "users")
 public class User {
 
+	
+	  // The 'id' field is annotated with @Id to indicate that it is the primary key.
+    // @GeneratedValue(strategy = GenerationType.IDENTITY) specifies that the database will generate the unique id for each new entity.
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+ // 'username' field is annotated with @Column(unique = true, nullable = false) to enforce uniqueness and non-nullability
     @Column(unique = true, nullable = false)
     private String username;
 
+
+ // 'password' field is annotated with @Column(nullable = false) to enforce non-nullability.
     @Column(nullable = false)
     private String password;
 
